@@ -1,0 +1,6 @@
+@Voice_AI_Agent_HostAddress = http://localhost:5169
+
+GET {{Voice_AI_Agent_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -71,9 +71,10 @@ Status codes used: `200` (success), `201` (created), `404` (not found), `422` (v
 | Tool | Maps to | Purpose |
 |---|---|---|
 | `get_patients` | `GET /patients?phoneNumber=...&dateOfBirth=...&lastName=...` | Fetches patients matching the search criteria |
-| `create_patient` | `POST /patients` | Saves a new patient after the caller confirms |
+| `create_patient` | `POST /patients` | Saves a new patient after the caller confirms. **Bonus** (prompts the caller to update information if an existing record with matching phone number is found) |
 | `update_patient` | `PUT /patients/:id` | Updates specific fields on an existing patient |
 
+All call logs are automatically saved in Vapi when the call ends.\
 `update_patient` tool call doesn't execute successfully via Vapi. (see *Deployment & Known Limitations*)\
 `DELETE` was **intentionally not exposed as a voice tool** — there is no requirement for a phone caller to delete records, and giving an LLM-driven voice agent delete authority over the phone was judged an unnecessary risk for no required benefit.
 
@@ -167,7 +168,10 @@ GENERAL STYLE
 dotnet restore
 dotnet build
 
-# Apply EF Core migrations (creates app.db)
+# Seeded app.db file is included in this repo
+Go to `https://www.fluentdb.ai/tools/sqlite-viewer` and upload app.db to inspect records.
+
+# Optionally, apply EF Core migrations (creates a new app.db). Delete the existing app.db first
 dotnet ef database update
 
 # Run
@@ -211,7 +215,4 @@ This section documents real decisions and blockers encountered while building th
 ## What Would Be Done With More Time (Next Steps)
 
 1. Migrate to PostgreSQL and deploy on a persistent, always-on host (Render free Postgres, or a paid Railway/Render tier).
-2. Add automated integration tests for the API layer (the assignment's easiest bonus to add given the API is already stable).
-3. Implement the server-side JSON-repair guard for Vapi's malformed partial-update payloads, or replace the "API Request" tool type with Vapi's custom-function/webhook pattern if that proves more reliable.
-4. Add a lightweight dashboard (simple HTML/JS page hitting the existing `GET /patients` endpoint) to visually browse registered patients.
-5. Store a call transcript or summary linked to each patient record for auditability.
+2. Implement the server-side JSON-repair guard for Vapi's malformed partial-update payloads.

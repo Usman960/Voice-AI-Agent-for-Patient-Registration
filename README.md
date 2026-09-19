@@ -30,7 +30,7 @@ Same REST API is also queryable directly (Scalar / Postman / curl)
 
 **Separation of concerns:**
 - **Telephony / STT / TTS / LLM orchestration** — handled entirely by Vapi. No custom speech code was written; Vapi abstracts call handling, transcription, and voice synthesis, and lets the LLM invoke "tools" (function calls) mid-conversation.
-- **Conversational logic** — lives in the Vapi **system prompt** (see `vapi-system-prompt.md` in this repo / below), not in backend code. The backend has no awareness of "conversation state" — it's a stateless REST API.
+- **Conversational logic** — lives in the Vapi system prompt, not in backend code. The backend has no awareness of "conversation state" — it's a stateless REST API.
 - **Data layer** — ASP.NET Core Web API + EF Core + SQLite. Standard layered structure: `Model/` (EF entities), `DTOs/` (request contracts), `Data/` (DbContext), `Controllers/` (endpoints).
 - **Integration** — Vapi calls the API over HTTPS via three defined tools, exactly as any HTTP client would.
 

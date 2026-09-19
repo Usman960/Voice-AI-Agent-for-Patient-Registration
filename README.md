@@ -178,7 +178,7 @@ dotnet ef database update
 dotnet run
 ```
 
-The API will be available at the port shown in the console (e.g. `https://localhost:5289`). Swagger/Scalar docs at `/scalar/v1`.
+The API will be available at the port shown in the console (e.g. `https://localhost:5289`). Scalar docs at `/scalar/v1`.
 
 To connect a Vapi assistant to a local instance, expose it publicly with ngrok:
 ```bash

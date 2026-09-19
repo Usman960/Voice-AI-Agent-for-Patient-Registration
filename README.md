@@ -201,7 +201,6 @@ This section documents real decisions and blockers encountered while building th
 - **Railway:** deployment repeatedly failed to load repository branches. Root cause traced to Railway's GitHub App being installed under a *different* GitHub account (a collaborator's, from an earlier unrelated group project) rather than the account hosting this repo — a genuine multi-account authorization mismatch on GitHub's/Railway's side, not a config error in this project. Revoking and reinstalling the GitHub App did not resolve it within a reasonable time budget.
 - **Render:** successfully deployed via a custom Dockerfile. **However, Render's free tier does not include persistent disk storage**, which is required for SQLite to survive restarts/redeploys — a hard requirement of this assignment. Upgrading to a paid tier, or migrating from SQLite to Render's free managed PostgreSQL, would resolve this, but both were judged out of scope for the remaining time available.
 - **Decision:** given the assignment brief explicitly lists "ngrok over cloud deploy" as an acceptable trade-off and states vendor/hosting blockers will not be penalized if documented, the final submission runs locally via ngrok.
-- **Next step with more time:** migrate the EF Core provider from SQLite to PostgreSQL (`Npgsql.EntityFrameworkCore.PostgreSQL`) and deploy against Render's free managed Postgres, which would eliminate the disk-persistence dependency entirely.
 
 ### Vapi sends malformed JSON on partial updates
 - While testing `update_patient`, requests with unset optional fields were arriving at the backend as **malformed JSON** (missing the opening `{` and a stray leading comma). This is a serialization quirk in Vapi's tool-body assembly, not an application bug — confirmed by logging the raw request body on the backend. Surprisingly, this issue doesn't occur in `create_patient`.
@@ -214,5 +213,5 @@ This section documents real decisions and blockers encountered while building th
 
 ## What Would Be Done With More Time (Next Steps)
 
-1. Migrate to PostgreSQL and deploy on a persistent, always-on host (Render free Postgres, or a paid Railway/Render tier).
+1. Migrate the EF Core provider from SQLite to PostgreSQL (`Npgsql.EntityFrameworkCore.PostgreSQL`) and deploy against Render's free managed Postgres, which would eliminate the disk-persistence dependency entirely.
 2. Implement the server-side JSON-repair guard for Vapi's malformed partial-update payloads.
